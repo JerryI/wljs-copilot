@@ -8,9 +8,8 @@ const fetchSuggestion = async (state, view) => {
     const cell = state.facet(originFacet)[0].origin;
     const cursor = state.selection.ranges[0];
 
-    if (cursor.from == cursor.to) return false;
-
-    const result = await server.io.fetch('Notebook`Editor`Copilot`Private`gen', [cursor.from+1, cursor.to+1, cell.uid ]);
+    
+    const result = await server.io.fetch('CoffeeLiqueur`Extensions`Copilot`Private`gen', [cursor.from+1, cursor.to+1, cell.uid ]);
     if (!result) return false;
 
     return result.slice(1, -1);

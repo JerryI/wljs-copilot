@@ -1,1 +1,1 @@
-## Work in Progress
+## Tech demo on a basic LLM autocomplete plugin
