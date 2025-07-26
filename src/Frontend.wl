@@ -1,17 +1,25 @@
-BeginPackage["Notebook`Editor`Copilot`", {
+BeginPackage["CoffeeLiqueur`Extensions`Copilot`", {
     "JerryI`Notebook`", 
     "JerryI`Misc`Events`",
+    "JerryI`Misc`Async`",
     "JerryI`Misc`Events`Promise`"
 }]
 
+
 Begin["`Private`"]
 
-gen[assoc_][callback_] := With[{
-    cell = CellObj`HashMap[assoc["Hash"]]
-},
-    Print[cell];
 
-    callback[RandomWord[]];
+gen[from_, to_, cellHash_] := With[{
+    cell = CellObj`HashMap[ cellHash ],
+    promise = Promise[]
+},
+    Print[StringTake[cell["Data"], {from, to}] ];
+
+    SetTimeout[
+        EventFire[promise, Resolve, RandomWord[] ];
+    , 300];
+
+    promise
 ]
 
 End[]
