@@ -24,14 +24,14 @@ gen[from_, to_, cellHash_] := With[{
     promise = Promise[]
 },
 
-    If[bot === Null, bot = GPTChatObject["Works as autocomplete bar. User sends prompts with code snippents, ^^ indicates the cursor positions. Reply only with this completion expression where the cursor or empty string if completion is not needed. Most used languages: Wolfram, JS, MD, HTML"] ];
+    If[bot === Null, bot = GPTChatObject["Works as autocomplete bar. User sends prompts with code snippents, ^^ indicates the cursor positions (do not reply with ^^, this is inserted only for you). Reply only with this completion expression starting from the cursor position and replacing the whole line or return empty string if completion is not needed. Apply syntax/spelling corrections if needed or possible. Most used languages: Wolfram, JS, MD, HTML"] ];
 
     If[StringLength[StringTrim[cell["Data"] ] ] < 3,
         EventFire[promise, Resolve, False];
         Return[promise];
     ];
 
-    With[{payload = truncateString[StringInsert[cell["Data"]<>" ", "^^", from+1], from+1, 1000]},
+    With[{payload = truncateString[StringInsert[cell["Data"]<>" ", "^^", from], from, 1000]},
         GPTChatCompleteAsync[bot, payload, Function[Null, 
             EventFire[promise, Resolve, bot["Messages"][[-1, "content"]] ];
         ] ];

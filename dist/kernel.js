@@ -101,18 +101,18 @@ const C = (t) => a.fromClass(
     {
       key: "Tab",
       run: (t) => {
-        var e;
-        const n = (e = t.state.field(
-          u
-        )) == null ? void 0 : e.suggestion;
-        return n ? (t.dispatch({
-          ...T(
-            t.state,
-            n,
-            t.state.selection.main.head,
-            t.state.selection.main.head
-          )
-        }), !0) : !1;
+        const state = t.state;
+        const main = state.selection.main;
+        const suggestion = state.field(u)?.suggestion;
+        if (!suggestion) return false;
+
+        // compute end-of-line from the cursor
+        const lineEnd = state.doc.lineAt(main.head).to;
+
+        t.dispatch({
+          ...T(state, suggestion, main.head, lineEnd) // <-- replace [head, lineEnd]
+        });
+        return true;
       }
     }
   ])
